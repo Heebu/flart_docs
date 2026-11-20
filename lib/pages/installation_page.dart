@@ -1,182 +1,225 @@
 import 'package:flartdart/flartdart.dart';
-import '../components/docs_layout.dart';
+import '../theme/docs_theme.dart';
+import '../components/docs_shell.dart';
+import '../components/code_block.dart';
 
 class InstallationPage extends StatelessWidget {
   const InstallationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DocsLayout(
-      currentRoute: '/installation',
-      title: 'Installation & CLI',
-      child: FDColumn(
+    return DocsShell(
+      currentRoute: '/docs/installation',
+      title: 'Installation & Quick Start',
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FDText(
-            'Installation & CLI',
-            style: TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade900,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          FDText(
-            'The FlartDart framework comes with a dedicated CLI to manage your projects effortlessly. Install the CLI, generate a new project, and run your dev server in seconds.',
-            style: TextStyle(
-              fontSize: 18.0,
-              color: FlartColors.blueGrey.shade700,
-              height: 1.5,
-            ),
-          ),
-          const FDSizedBox(height: 48.0),
-          
-          FDText(
-            '1. Install the CLI',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          const _CodeSnippet(
-            code: 'dart pub global activate flartdart',
-          ),
-          const FDSizedBox(height: 32.0),
-          
-          FDText(
-            '2. Create a new project',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          const _CodeSnippet(
-            code: 'flartdart create my_app',
-          ),
-          const FDSizedBox(height: 32.0),
-          
-          FDText(
-            '3. Run the development server',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          const _CodeSnippet(
-            code: '''cd my_app
-flartdart run''',
-          ),
-          const FDSizedBox(height: 48.0),
-          
-          FDText(
-            'CLI Commands',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          _CommandTable(),
+          _buildHeader(),
+          const SizedBox(height: 32),
+          _buildPrerequisites(),
+          const SizedBox(height: 32),
+          _buildCliInstallation(),
+          const SizedBox(height: 32),
+          _buildCreatingApp(),
+          const SizedBox(height: 32),
+          _buildRunningDevServer(),
+          const SizedBox(height: 32),
+          _buildProductionBuild(),
         ],
       ),
     );
   }
-}
 
-class _CodeSnippet extends StatelessWidget {
-  final String code;
-
-  const _CodeSnippet({required this.code});
-
-  @override
-  Widget build(BuildContext context) {
-    return FDContainer(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: FlartColors.blueGrey.shade900,
-        borderRadius: const BorderRadius.circular(12.0),
-      ),
-      child: const FDRawHTML('''
-        <pre style="margin: 0; overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace; color: #e2e8f0; font-size: 14px; line-height: 1.5;">
-          <code>\${code.replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>
-        </pre>
-      '''),
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: DocsTheme.primary.withValues(alpha: 0.15),
+            borderRadius: const BorderRadius.circular(6),
+          ),
+          child: const Text(
+            'GETTING STARTED',
+            style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                color: DocsTheme.primary),
+          ),
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          'Installation & Setup',
+          style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.w800,
+              color: DocsTheme.textPrimary),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Get your Flart application up and running in less than 60 seconds with the Flart CLI.',
+          style: TextStyle(fontSize: 16, color: DocsTheme.textSecondary),
+        ),
+      ],
     );
   }
-}
 
-class _CommandTable extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const FDContainer(
-      width: double.infinity,
-      rawCss: 'border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden;',
-      child: FDColumn(
-        children: [
-          _TableRow(command: 'Command', description: 'Description', isHeader: true),
-          _TableRow(command: 'flartdart create <name>', description: 'Create a new project (templates: --template default|counter|routing)'),
-          _TableRow(command: 'flartdart run', description: 'Start a dev server with Hot Reload (on port 8080)'),
-          _TableRow(command: 'flartdart run -r', description: 'Run in optimized Release/Production mode'),
-          _TableRow(command: 'flartdart build', description: 'Build the project for deployment (output in web/build/)'),
-          _TableRow(command: 'flartdart get', description: 'Install dependencies for the project'),
-        ],
-      ),
+  Widget _buildPrerequisites() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Prerequisites',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Flart requires Dart SDK 3.0.0 or higher. You do not need the full Flutter SDK or Android/iOS toolchains, making it ultra-lightweight for web and CI/CD pipelines.',
+          style: TextStyle(
+              fontSize: 14, color: DocsTheme.textSecondary, height: 1.5),
+        ),
+        SizedBox(height: 16),
+        CodeBlock(
+          code: 'dart --version\n# Dart SDK version: 3.5.0 (or higher)',
+          language: 'bash',
+          title: 'Verify Dart SDK',
+        ),
+      ],
     );
   }
-}
 
-class _TableRow extends StatelessWidget {
-  final String command;
-  final String description;
-  final bool isHeader;
+  Widget _buildCliInstallation() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '1. Install the Flart CLI',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Activate the flart command-line tool globally via pub.dev:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: 'dart pub global activate flart',
+          language: 'bash',
+          title: 'Install CLI',
+        ),
+      ],
+    );
+  }
 
-  const _TableRow({
-    required this.command,
-    required this.description,
-    this.isHeader = false,
-  });
+  Widget _buildCreatingApp() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '2. Scaffold a New Project',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Use the flart create command to generate a preconfigured web application with Virtual DOM reconciler and build_runner:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: 'flart create my_first_flart_app\ncd my_first_flart_app',
+          language: 'bash',
+          title: 'Create Project',
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Or add flartdart directly to an existing Dart project:\'s pubspec.yaml:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: '''dependencies:
+  flartdart: ^2.1.0
 
-  @override
-  Widget build(BuildContext context) {
-    return FDContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-      rawCss: isHeader ? '' : 'border-top: 1px solid #eaeaea;',
-      decoration: BoxDecoration(
-        color: isHeader ? FlartColors.blueGrey.shade50 : FlartColors.white,
-      ),
-      child: FDRow(
-        children: [
-          FDExpanded(
-            flex: 2,
-            child: FDText(
-              command,
-              style: TextStyle(
-                fontWeight: isHeader ? FontWeight.bold : FontWeight.w500,
-                color: isHeader ? FlartColors.blueGrey.shade900 : FlartColors.blue.shade700,
-                fontFamily: isHeader ? 'inherit' : 'monospace',
-              ),
-            ),
-          ),
-          FDExpanded(
-            flex: 3,
-            child: FDText(
-              description,
-              style: TextStyle(
-                fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
-                color: isHeader ? FlartColors.blueGrey.shade900 : FlartColors.blueGrey.shade700,
-              ),
-            ),
-          ),
-        ],
-      ),
+dev_dependencies:
+  build_runner: ^2.4.9
+  build_web_compilers: ^4.0.10''',
+          language: 'yaml',
+          title: 'pubspec.yaml',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRunningDevServer() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '3. Start the Development Server',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Run the local development server with instant incremental compilation and source maps:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: 'dart run build_runner serve web:8080',
+          language: 'bash',
+          title: 'Development Server',
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Open http://localhost:8080 in your browser to view your live Flart application.',
+          style: TextStyle(fontSize: 14, color: DocsTheme.accentGreen),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductionBuild() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '4. Compile for Production',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Compile an optimized, minified production build with tree shaking:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: 'dart run build_runner build --release --output web:build',
+          language: 'bash',
+          title: 'Production Build',
+        ),
+        SizedBox(height: 12),
+        Text(
+          'The resulting build/ folder contains static HTML, CSS, and minified JS (~280 KB gzipped) ready to deploy to GitHub Pages, Cloudflare Pages, Firebase Hosting, Netlify, or Vercel.',
+          style: TextStyle(
+              fontSize: 14, color: DocsTheme.textSecondary, height: 1.5),
+        ),
+      ],
     );
   }
 }

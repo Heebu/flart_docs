@@ -1,148 +1,185 @@
 import 'package:flartdart/flartdart.dart';
+import '../theme/docs_theme.dart';
 
 class DocsSidebar extends StatelessWidget {
   final String currentRoute;
+  final VoidCallback? onItemClick;
 
   const DocsSidebar({
     required this.currentRoute,
+    this.onItemClick,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FDContainer(
-      width: 250.0,
-      rawCss: 'height: 100vh; border-right: 1px solid #eaeaea; position: sticky; top: 0;',
-      padding: const EdgeInsets.symmetric(vertical: 24.0),
-      decoration: BoxDecoration(
-        color: FlartColors.blueGrey.shade50,
+    return Container(
+      width: 260,
+      decoration: const BoxDecoration(
+        color: DocsTheme.surface,
+        border: Border(
+          right: BorderSide(color: DocsTheme.border, width: 1),
+        ),
       ),
-      child: FDSingleChildScrollView(
-        child: FDColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildBrand(),
-            const FDSizedBox(height: 32.0),
-            _buildSection('GETTING STARTED', [
-              _NavItem(title: 'Introduction', route: '/', currentRoute: currentRoute),
-              _NavItem(title: 'Installation & CLI', route: '/installation', currentRoute: currentRoute),
-            ]),
-            const FDSizedBox(height: 24.0),
-            _buildSection('CORE CONCEPTS', [
-              _NavItem(title: 'Responsive Sizing', route: '/responsive', currentRoute: currentRoute),
-              _NavItem(title: 'State Management', route: '/state', currentRoute: currentRoute),
-              _NavItem(title: 'Advanced Routing', route: '/routing', currentRoute: currentRoute),
-            ]),
-            const FDSizedBox(height: 24.0),
-            _buildSection('COMPONENTS', [
-              _NavItem(title: 'Basic Widgets', route: '/basic', currentRoute: currentRoute),
-              _NavItem(title: 'Layout Widgets', route: '/layout', currentRoute: currentRoute),
-              _NavItem(title: 'Input Widgets', route: '/inputs', currentRoute: currentRoute),
-              _NavItem(title: 'Interaction Widgets', route: '/interactions', currentRoute: currentRoute),
-              _NavItem(title: 'Animation Widgets', route: '/animations', currentRoute: currentRoute),
-            ]),
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionHeader('GETTING STARTED'),
+              _buildNavItem('Overview', '/', Icons.home),
+              _buildNavItem(
+                  'Installation & CLI', '/docs/installation', Icons.terminal),
+              _buildNavItem('Virtual DOM Architecture', '/docs/architecture',
+                  Icons.memory),
+              _buildNavItem(
+                  'Full-Stack Dart Frog', '/docs/fullstack', Icons.cloud),
+
+              const SizedBox(height: 20),
+              _buildSectionHeader('CORE CONCEPTS'),
+              _buildNavItem(
+                  'Responsive Design', '/docs/responsive', Icons.devices),
+              _buildNavItem('State Management', '/docs/state', Icons.refresh),
+              _buildNavItem(
+                  'Declarative Routing', '/docs/routing', Icons.alt_route),
+
+              const SizedBox(height: 20),
+              _buildSectionHeader('THE 9 WIDGET CATEGORIES'),
+              _buildNavItem(
+                  '1. Basic & Core', '/docs/widgets/basic', Icons.widgets),
+              _buildNavItem('2. Layout & Structure', '/docs/widgets/layout',
+                  Icons.view_quilt),
+              _buildNavItem('3. Decoration & Style', '/docs/widgets/decoration',
+                  Icons.palette),
+              _buildNavItem('4. Scrollables & Lists',
+                  '/docs/widgets/scrollables', Icons.view_stream),
+              _buildNavItem(
+                  '5. Form & Inputs', '/docs/widgets/inputs', Icons.edit),
+              _buildNavItem('6. Buttons & Gestures', '/docs/widgets/buttons',
+                  Icons.touch_app),
+              _buildNavItem(
+                  '7. Animations', '/docs/widgets/animation', Icons.animation),
+              _buildNavItem(
+                  '8. Media & Feedback', '/docs/widgets/media', Icons.image),
+              _buildNavItem(
+                  '9. Utility & Modals', '/docs/widgets/utility', Icons.layers),
+
+              const SizedBox(height: 32),
+              // Backend health badge
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: DocsTheme.surfaceAlt,
+                  borderRadius: const BorderRadius.circular(10),
+                  border: Border.all(color: DocsTheme.borderLight),
+                ),
+                child: const Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: DocsTheme.accentGreen,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Dart Frog Server',
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: DocsTheme.textPrimary),
+                          ),
+                          Text(
+                            'Port 8081 • Healthy',
+                            style: TextStyle(
+                                fontSize: 10, color: DocsTheme.textMuted),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildBrand() {
-    return FDContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: FDRow(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FDContainer(
-            width: 32.0,
-            height: 32.0,
-            decoration: BoxDecoration(
-              color: FlartColors.blue.shade600,
-              borderRadius: const BorderRadius.circular(8.0),
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, bottom: 8, top: 4),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          color: DocsTheme.textMuted,
+          letterSpacing: 0.8,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(String label, String route, dynamic icon) {
+    final isActive = currentRoute == route;
+
+    return GestureDetector(
+      onTap: () {
+        onItemClick?.call();
+        if (!isActive) {
+          PageNavigator.pushNamed(route);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isActive ? DocsTheme.card : Colors.transparent,
+          borderRadius: const BorderRadius.circular(8),
+          border: isActive
+              ? Border.all(
+                  color: DocsTheme.accentGreen.withValues(alpha: 0.3), width: 1)
+              : null,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isActive ? DocsTheme.accentGreen : DocsTheme.textMuted,
             ),
-            child: const FDCenter(
-              child: FDText(
-                'F',
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                label,
                 style: TextStyle(
-                  color: FlartColors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize: 13,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                  color: isActive
+                      ? DocsTheme.textPrimary
+                      : DocsTheme.textSecondary,
                 ),
               ),
             ),
-          ),
-          const FDSizedBox(width: 12.0),
-          FDText(
-            'FlartDocs',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade900,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSection(String title, List<Widget> items) {
-    return FDColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        FDContainer(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          margin: const EdgeInsets.only(bottom: 8.0),
-          child: FDText(
-            title,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w700,
-              color: FlartColors.blueGrey.shade400,
-              letterSpacing: 1.0,
-            ),
-          ),
-        ),
-        ...items,
-      ],
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  final String title;
-  final String route;
-  final String currentRoute;
-
-  const _NavItem({
-    required this.title,
-    required this.route,
-    required this.currentRoute,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = currentRoute == route;
-    
-    return FDGestureDetector(
-      onTap: () {
-        if (!isActive) {
-          PageNavigator.pushNamed(route, transition: RouteTransition.fade);
-        }
-      },
-      child: FDContainer(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-        rawCss: isActive ? 'border-left: 3px solid \${FlartColors.blue.shade600};' : 'border-left: 3px solid transparent;',
-        decoration: BoxDecoration(
-          color: isActive ? FlartColors.blue.shade50 : FlartColors.transparent,
-        ),
-        child: FDText(
-          title,
-          style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            color: isActive ? FlartColors.blue.shade700 : FlartColors.blueGrey.shade700,
-          ),
+            if (isActive)
+              const Container(
+                width: 4,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: DocsTheme.accentGreen,
+                  shape: BoxShape.circle,
+                ),
+              ),
+          ],
         ),
       ),
     );

@@ -1,128 +1,209 @@
 import 'package:flartdart/flartdart.dart';
-import '../components/docs_layout.dart';
-import '../components/widget_showcase.dart';
+import '../theme/docs_theme.dart';
+import '../components/docs_shell.dart';
+import '../components/code_block.dart';
 
 class RoutingPage extends StatelessWidget {
   const RoutingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DocsLayout(
-      currentRoute: '/routing',
-      title: 'Advanced Routing',
-      child: FDColumn(
+    return DocsShell(
+      currentRoute: '/docs/routing',
+      title: 'Declarative Routing & History',
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FDText(
-            'Advanced Routing',
-            style: TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade900,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          FDText(
-            'FlartDart features a modern routing system with built-in support for path parameters, named routes, and browser history management.',
-            style: TextStyle(
-              fontSize: 18.0,
-              color: FlartColors.blueGrey.shade700,
-              height: 1.5,
-            ),
-          ),
-          const FDSizedBox(height: 48.0),
-          
-          FDText(
-            '1. Registering Routes',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          FDText(
-            'Define your application routes in `main.dart` using `PageNavigator.registerRoutes`. You can easily extract path parameters!',
-            style: TextStyle(
-              fontSize: 16.0,
-              color: FlartColors.blueGrey.shade700,
-              height: 1.5,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          const _CodeSnippet(
-            code: '''void main() {
-  PageNavigator.registerRoutes({
-    '/': (params) => const HomePage(),
-    '/details/:id': (params) => DetailPage(id: params['id']!),
-  });
-  
-  runApp(const MyApp());
-}''',
-          ),
-          const FDSizedBox(height: 48.0),
-          
-          FDText(
-            '2. Navigating',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: FlartColors.blueGrey.shade800,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          FDText(
-            'Use `PageNavigator.pushNamed()` to switch routes programmatically.',
-            style: TextStyle(
-              fontSize: 16.0,
-              color: FlartColors.blueGrey.shade700,
-              height: 1.5,
-            ),
-          ),
-          const FDSizedBox(height: 16.0),
-          
-          WidgetShowcase(
-            title: 'Navigation Example',
-            description: 'Note: This example simulates navigation. In a real app, it updates the browser URL.',
-            child: FDElevatedButton(
-              onPressed: () {
-                // PageNavigator.pushNamed('/details/42');
-                print('Navigating to /details/42');
-              },
-              child: const FDText('Go to Details (ID: 42)'),
-            ),
-            code: '''FDElevatedButton(
-  onPressed: () {
-    PageNavigator.pushNamed('/details/42');
-  },
-  child: FDText('Go to Details (ID: 42)'),
-)''',
-          ),
+          _buildHeader(),
+          const SizedBox(height: 32),
+          _buildOverview(),
+          const SizedBox(height: 32),
+          _buildRegistrationGuide(),
+          const SizedBox(height: 32),
+          _buildNavigationMethods(),
+          const SizedBox(height: 32),
+          _buildRouteGuards(),
         ],
       ),
     );
   }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: DocsTheme.accentAmber.withValues(alpha: 0.15),
+            borderRadius: const BorderRadius.circular(6),
+          ),
+          child: const Text(
+            'NAVIGATION',
+            style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                color: DocsTheme.accentAmber),
+          ),
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          'Declarative Routing & History',
+          style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.w800,
+              color: DocsTheme.textPrimary),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Deep-linking, browser history synchronization, route guards, and transitions with PageNavigator.',
+          style: TextStyle(fontSize: 16, color: DocsTheme.textSecondary),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOverview() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Overview',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Flart\'s PageNavigator provides a declarative routing stack designed specifically for browser single-page applications (SPAs). It integrates seamlessly with the browser\'s window.history API, supporting hash-based deep linking, forward and back buttons, and query parameters without requiring server-side fallback rules.',
+          style: TextStyle(
+              fontSize: 14, color: DocsTheme.textSecondary, height: 1.5),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRegistrationGuide() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Registering Routes in main()',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Register routes before running runApp:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: '''void main() {
+  PageNavigator.registerRoutes({
+    '/': const HomePage(),
+    '/docs/installation': const InstallationPage(),
+    '/docs/architecture': const ArchitecturePage(),
+    '/docs/widgets': const WidgetsCatalogPage(),
+  });
+
+  PageNavigator.init();
+
+  runApp(const MyApp());
 }
 
-class _CodeSnippet extends StatelessWidget {
-  final String code;
-
-  const _CodeSnippet({required this.code});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FDContainer(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: FlartColors.blueGrey.shade900,
-        borderRadius: const BorderRadius.circular(12.0),
-      ),
-      child: const FDRawHTML('''
-        <pre style="margin: 0; overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', monospace; color: #e2e8f0; font-size: 14px; line-height: 1.5;">
-          <code>\${code.replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code>
-        </pre>
-      '''),
+    return FDMaterialApp(
+      title: 'My Flart App',
+      home: PageNavigator.current,
+    );
+  }
+}''',
+          language: 'dart',
+          title: 'Route Registration',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNavigationMethods() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Navigating Between Pages',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Pushing, replacing, and popping routes with optional animated transitions:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: '''// Push a named route onto history
+PageNavigator.pushNamed('/docs/widgets');
+
+// Push with transition
+PageNavigator.pushNamed(
+  '/docs/architecture',
+  transition: RouteTransition.fade,
+);
+
+// Replace current route (no back stack entry)
+PageNavigator.replaceNamed('/dashboard');
+
+// Pop top route (browser history back)
+PageNavigator.pop();''',
+          language: 'dart',
+          title: 'Navigation Commands',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRouteGuards() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Route Guards & Authentication',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Protect routes using PageNavigator\'s built-in guard function:',
+          style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: '''PageNavigator.registerRoutes(
+  routes,
+  guard: (routeName) {
+    if (routeName.startsWith('/admin')) {
+      return authService.isAuthenticated;
+    }
+    return true;
+  },
+  unauthorizedRoute: '/login',
+);''',
+          language: 'dart',
+          title: 'Route Guards',
+        ),
+      ],
     );
   }
 }

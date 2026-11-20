@@ -4,16 +4,19 @@ import '../theme/docs_theme.dart';
 class DocsSidebar extends StatelessWidget {
   final String currentRoute;
   final VoidCallback? onItemClick;
+  final bool isDrawer;
 
   const DocsSidebar({
     required this.currentRoute,
     this.onItemClick,
+    this.isDrawer = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      id: isDrawer ? 'flart-docs-drawer-content' : 'flart-docs-sidebar',
       width: 260,
       decoration: const BoxDecoration(
         color: DocsTheme.surface,
@@ -82,6 +85,12 @@ class DocsSidebar extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: DocsTheme.accentGreen,
                         shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x6610B981),
+                            blurRadius: 6,
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(width: 8),
@@ -143,7 +152,9 @@ class DocsSidebar extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 2),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? DocsTheme.card : Colors.transparent,
+          color: isActive
+              ? DocsTheme.accentGreen.withValues(alpha: 0.12)
+              : Colors.transparent,
           borderRadius: const BorderRadius.circular(8),
           border: isActive
               ? Border.all(
@@ -163,20 +174,26 @@ class DocsSidebar extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontSize: 13,
-                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
                   color: isActive
-                      ? DocsTheme.textPrimary
+                      ? DocsTheme.accentGreen
                       : DocsTheme.textSecondary,
                 ),
               ),
             ),
             if (isActive)
               const Container(
-                width: 4,
-                height: 4,
+                width: 6,
+                height: 6,
                 decoration: BoxDecoration(
                   color: DocsTheme.accentGreen,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x6610B981),
+                      blurRadius: 6,
+                    ),
+                  ],
                 ),
               ),
           ],

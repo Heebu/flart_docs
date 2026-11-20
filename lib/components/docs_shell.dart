@@ -48,6 +48,7 @@ class _DocsShellState extends State<DocsShell> {
                     onToggleMobileMenu: () => setState(
                         () => _isMobileMenuOpen = !_isMobileMenuOpen),
                     isMobileMenuOpen: _isMobileMenuOpen,
+                    currentRoute: widget.currentRoute,
                   ),
 
                   // Main Content + Sidebar
@@ -101,6 +102,7 @@ class _DocsShellState extends State<DocsShell> {
                           onTap: () {}, // Prevent taps inside drawer from closing
                           child: DocsSidebar(
                             currentRoute: widget.currentRoute,
+                            isDrawer: true,
                             onItemClick: () =>
                                 setState(() => _isMobileMenuOpen = false),
                           ),

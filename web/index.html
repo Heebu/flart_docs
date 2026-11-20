@@ -43,6 +43,61 @@
     code, pre {
       font-family: 'JetBrains Mono', monospace;
     }
+
+    /* Pinned Sticky Navbar & Glassmorphic Backdrop */
+    #flart-docs-navbar {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 100 !important;
+      background: rgba(11, 15, 25, 0.82) !important;
+      backdrop-filter: blur(16px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Pinned Sticky Sidebar (Independent scroll if content exceeds screen height) */
+    #flart-docs-sidebar {
+      position: sticky !important;
+      top: 64px !important;
+      height: calc(100vh - 64px) !important;
+      max-height: calc(100vh - 64px) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      flex-shrink: 0 !important;
+      background: rgba(15, 23, 42, 0.5) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+    }
+
+    /* Mobile / Tablet Drawer content (Independent scroll) */
+    #flart-docs-drawer-content {
+      height: calc(100vh - 64px) !important;
+      max-height: calc(100vh - 64px) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      background: #111827 !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    #flart-docs-sidebar::-webkit-scrollbar,
+    #flart-docs-drawer-content::-webkit-scrollbar {
+      width: 5px;
+    }
+    #flart-docs-sidebar::-webkit-scrollbar-track,
+    #flart-docs-drawer-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    #flart-docs-sidebar::-webkit-scrollbar-thumb,
+    #flart-docs-drawer-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+    #flart-docs-sidebar::-webkit-scrollbar-thumb:hover,
+    #flart-docs-drawer-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
       width: 8px;

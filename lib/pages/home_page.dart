@@ -921,14 +921,15 @@ class _HomePageState extends State<HomePage> {
           ] else
             Row(
               children: [
-                Expanded(
+                Container(
+                  width: 500,
                   child: TextField(
                     controller: _authorController,
                     placeholder: 'Your name or handle (e.g. @developer)',
                     style: const TextStyle(color: DocsTheme.textPrimary),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
                 // Rating picker
                 Row(
                   children: [

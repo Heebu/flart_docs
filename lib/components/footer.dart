@@ -55,12 +55,15 @@ class DocsFooter extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 12),
-                      Text(
-                        'The lightweight full-stack web framework for Dart.\nPure Dart Virtual DOM, zero CanvasKit overhead, 100% Flutter API parity.',
-                        style: TextStyle(
-                          fontSize: 13,
-                          height: 1.5,
-                          color: DocsTheme.textSecondary,
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          'The lightweight full-stack web framework for Dart.\nPure Dart Virtual DOM, zero CanvasKit overhead, 100% Flutter API parity.',
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.5,
+                            color: DocsTheme.textSecondary,
+                          ),
                         ),
                       ),
                     ],

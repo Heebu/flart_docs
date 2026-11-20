@@ -204,42 +204,21 @@ class DocsNavbar extends StatelessWidget {
     return GestureDetector(
       onTap: onOpenSearch,
       child: Container(
-        width: 300,
+        width: 400,
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: const Color(0x0FFFFFFF),
           borderRadius: const BorderRadius.circular(9),
           border: Border.all(color: const Color(0x1FFFFFFF), width: 1),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: const Row(
           children: [
-            const Row(
-              children: [
-                Icon(Icons.search, size: 16, color: Color(0xFF64748B)),
-                SizedBox(width: 10),
-                Text(
-                  'Search documentation...',
-                  style: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
-                ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: const Color(0x14FFFFFF),
-                borderRadius: const BorderRadius.circular(4),
-                border: Border.all(color: const Color(0x1FFFFFFF)),
-              ),
-              child: const Text(
-                'Ctrl K',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF94A3B8),
-                  fontFamily: 'JetBrains Mono',
-                ),
-              ),
+            Icon(Icons.search, size: 16, color: Color(0xFF64748B)),
+            SizedBox(width: 10),
+            Text(
+              'Search documentation...',
+              style: TextStyle(fontSize: 13, color: Color(0xFF94A3B8)),
             ),
           ],
         ),

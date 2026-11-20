@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FDMaterialApp(
       title: 'Flart — Pure Dart Web Framework',
+      debugShowCheckedModeBanner: false,
       home: PageNavigator.current,
     );
   }

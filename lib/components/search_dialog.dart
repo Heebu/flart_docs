@@ -64,32 +64,37 @@ class _SearchDialogState extends State<SearchDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xCC000000), // Dark modal backdrop
-      ),
-      child: Center(
-        child: Container(
-          width: 580,
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: DocsTheme.surface,
-            borderRadius: const BorderRadius.circular(16),
-            border: Border.all(color: DocsTheme.borderLight, width: 1.5),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x88000000),
-                blurRadius: 32,
-                offset: Offset(0, 12),
+    return GestureDetector(
+      onTap: widget.onClose,
+      child: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          color: Color(0xCC000000), // Dark modal backdrop
+        ),
+        padding:
+            const EdgeInsets.only(top: 80, bottom: 40, left: 16, right: 16),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: GestureDetector(
+            onTap: () {}, // Prevent clicks inside modal from closing
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 580),
+              decoration: BoxDecoration(
+                color: DocsTheme.surface,
+                borderRadius: const BorderRadius.circular(16),
+                border: Border.all(color: DocsTheme.borderLight, width: 1.5),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x88000000),
+                    blurRadius: 32,
+                    offset: Offset(0, 12),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
               // Search input bar
               Container(
                 padding:
@@ -237,7 +242,9 @@ class _SearchDialogState extends State<SearchDialog> {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 
   Widget _buildQuickTag(String label, String route) {

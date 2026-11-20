@@ -133,16 +133,19 @@ class _CodeBlockState extends State<CodeBlock> {
               ],
             ),
           ),
-          // Code content container
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              widget.code,
-              style: const TextStyle(
-                fontFamily: 'JetBrains Mono',
-                fontSize: 13,
-                height: 1.6,
-                color: Color(0xFFE2E8F0),
+          // Code content container (horizontally scrollable on small/medium screens)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                widget.code,
+                style: const TextStyle(
+                  fontFamily: 'JetBrains Mono',
+                  fontSize: 13,
+                  height: 1.6,
+                  color: Color(0xFFE2E8F0),
+                ),
               ),
             ),
           ),

@@ -31,15 +31,18 @@ class _DocsShellState extends State<DocsShell> {
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final isMobile = DocsTheme.isMobile(width);
+        final isTablet = DocsTheme.isTablet(width);
+        final isDesktop = DocsTheme.isDesktop(width);
 
         return Container(
           width: double.infinity,
           color: DocsTheme.background,
           child: Stack(
+            clipBehavior: Clip.none,
             children: [
               Column(
                 children: [
-                  // Top sticky navbar
+                  // Top navbar
                   DocsNavbar(
                     onOpenSearch: () => setState(() => _isSearchOpen = true),
                     onToggleMobileMenu: () => setState(
@@ -51,13 +54,13 @@ class _DocsShellState extends State<DocsShell> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Desktop / Tablet Sidebar
-                      if (!isMobile)
+                      // Desktop Sidebar only (>= 1024px)
+                      if (isDesktop)
                         DocsSidebar(
                           currentRoute: widget.currentRoute,
                         ),
 
-                      // Content Area
+                      // Content Area (takes full width on Mobile & Tablet)
                       Expanded(
                         child: Column(
                           children: [
@@ -66,8 +69,8 @@ class _DocsShellState extends State<DocsShell> {
                                 constraints:
                                     const BoxConstraints(maxWidth: 960),
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: isMobile ? 20 : 48,
-                                  vertical: 36,
+                                  horizontal: isMobile ? 16 : (isTablet ? 28 : 48),
+                                  vertical: isMobile ? 24 : 36,
                                 ),
                                 child: widget.child,
                               ),
@@ -81,21 +84,27 @@ class _DocsShellState extends State<DocsShell> {
                 ],
               ),
 
-              // Mobile drawer overlay
-              if (isMobile && _isMobileMenuOpen)
+              // Drawer overlay for Mobile & Tablet (< 1024px)
+              if (!isDesktop && _isMobileMenuOpen)
                 Positioned(
                   top: 64,
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  child: Container(
-                    color: const Color(0xE6000000),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: DocsSidebar(
-                        currentRoute: widget.currentRoute,
-                        onItemClick: () =>
-                            setState(() => _isMobileMenuOpen = false),
+                  child: GestureDetector(
+                    onTap: () => setState(() => _isMobileMenuOpen = false),
+                    child: Container(
+                      color: const Color(0xE6000000),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          onTap: () {}, // Prevent taps inside drawer from closing
+                          child: DocsSidebar(
+                            currentRoute: widget.currentRoute,
+                            onItemClick: () =>
+                                setState(() => _isMobileMenuOpen = false),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -103,7 +112,11 @@ class _DocsShellState extends State<DocsShell> {
 
               // Global search modal
               if (_isSearchOpen)
-                Positioned.fill(
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   child: SearchDialog(
                     onClose: () => setState(() => _isSearchOpen = false),
                   ),

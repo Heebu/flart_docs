@@ -17,12 +17,15 @@ class DocsNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = DocsTheme.isMobile(constraints.maxWidth);
+        final width = constraints.maxWidth;
+        final isMobile = DocsTheme.isMobile(width);
+        final isDesktop = DocsTheme.isDesktop(width);
+        final isTablet = DocsTheme.isTablet(width);
 
         return Container(
           width: double.infinity,
           height: 64,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 24),
           decoration: const BoxDecoration(
             color: DocsTheme.surface,
             border: Border(
@@ -39,8 +42,8 @@ class DocsNavbar extends StatelessWidget {
                 child: Row(
                   children: [
                     const Container(
-                      width: 34,
-                      height: 34,
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Color(0xFF10B981), Color(0xFF3B82F6)],
@@ -63,11 +66,11 @@ class DocsNavbar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 10),
                     const Text(
                       'Flart',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 19,
                         fontWeight: FontWeight.w800,
                         color: DocsTheme.textPrimary,
                         letterSpacing: -0.5,
@@ -76,7 +79,7 @@ class DocsNavbar extends StatelessWidget {
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2),
+                          horizontal: 7, vertical: 2),
                       decoration: BoxDecoration(
                         color: DocsTheme.accentGreen.withValues(alpha: 0.15),
                         borderRadius: const BorderRadius.circular(12),
@@ -97,12 +100,12 @@ class DocsNavbar extends StatelessWidget {
                 ),
               ),
 
-              // Center / Search trigger
-              if (!isMobile)
+              // Center / Search trigger (on Desktop)
+              if (isDesktop)
                 GestureDetector(
                   onTap: onOpenSearch,
                   child: Container(
-                    width: 280,
+                    width: 260,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
@@ -140,7 +143,7 @@ class DocsNavbar extends StatelessWidget {
                 ),
 
               // Right Navigation Links & Action Buttons
-              if (!isMobile)
+              if (isDesktop)
                 Row(
                   children: [
                     _buildNavLink('Docs', '/docs/installation'),
@@ -148,34 +151,48 @@ class DocsNavbar extends StatelessWidget {
                     _buildNavLink('Widgets', '/docs/widgets/basic'),
                     _buildNavLink('Dart Frog', '/docs/fullstack'),
                     const SizedBox(width: 16),
+                    _buildPubDevButton(),
+                  ],
+                )
+              else if (isTablet)
+                // Tablet: Search trigger + pub.dev + Hamburger
+                Row(
+                  children: [
                     GestureDetector(
-                      onTap: () {
-                        // Pub.dev link
-                        PageNavigator.pushNewTab(
-                            'https://pub.dev/packages/flartdart');
-                      },
+                      onTap: onOpenSearch,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
+                            horizontal: 12, vertical: 7),
                         decoration: BoxDecoration(
-                          color: DocsTheme.card,
+                          color: DocsTheme.surfaceAlt,
                           borderRadius: const BorderRadius.circular(8),
                           border: Border.all(color: DocsTheme.borderLight),
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.star,
-                                size: 14, color: DocsTheme.accentAmber),
+                            Icon(Icons.search,
+                                size: 16, color: DocsTheme.textMuted),
                             SizedBox(width: 6),
                             Text(
-                              'pub.dev',
+                              'Search...',
                               style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: DocsTheme.textPrimary,
-                              ),
+                                  fontSize: 12, color: DocsTheme.textMuted),
                             ),
                           ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    _buildPubDevButton(),
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: onToggleMobileMenu,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          isMobileMenuOpen ? Icons.close : Icons.menu,
+                          size: 24,
+                          color: DocsTheme.textPrimary,
                         ),
                       ),
                     ),
@@ -200,7 +217,7 @@ class DocsNavbar extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         child: Icon(
                           isMobileMenuOpen ? Icons.close : Icons.menu,
-                          size: 22,
+                          size: 24,
                           color: DocsTheme.textPrimary,
                         ),
                       ),
@@ -211,6 +228,36 @@ class DocsNavbar extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildPubDevButton() {
+    return GestureDetector(
+      onTap: () {
+        PageNavigator.pushNewTab('https://pub.dev/packages/flartdart');
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: DocsTheme.card,
+          borderRadius: const BorderRadius.circular(8),
+          border: Border.all(color: DocsTheme.borderLight),
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.star, size: 14, color: DocsTheme.accentAmber),
+            SizedBox(width: 6),
+            Text(
+              'pub.dev',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: DocsTheme.textPrimary,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

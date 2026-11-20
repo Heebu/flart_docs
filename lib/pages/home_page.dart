@@ -88,29 +88,37 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DocsShell(
-      currentRoute: '/',
-      title: 'Flart — Pure Dart Web Framework',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeroSection(),
-          const SizedBox(height: 64),
-          _buildBenchmarkComparison(),
-          const SizedBox(height: 64),
-          _buildInteractivePlayground(),
-          const SizedBox(height: 64),
-          _buildDartFrogTelemetry(),
-          const SizedBox(height: 64),
-          _buildCategoriesGrid(),
-          const SizedBox(height: 64),
-          _buildFeedbackSection(),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isMobile = DocsTheme.isMobile(width);
+        final isTablet = DocsTheme.isTablet(width);
+
+        return DocsShell(
+          currentRoute: '/',
+          title: 'Flart — Pure Dart Web Framework',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildHeroSection(isMobile, isTablet),
+              const SizedBox(height: 64),
+              _buildBenchmarkComparison(isMobile),
+              const SizedBox(height: 64),
+              _buildInteractivePlayground(isMobile),
+              const SizedBox(height: 64),
+              _buildDartFrogTelemetry(isMobile),
+              const SizedBox(height: 64),
+              _buildCategoriesGrid(isMobile),
+              const SizedBox(height: 64),
+              _buildFeedbackSection(isMobile),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeroSection() {
+  Widget _buildHeroSection(bool isMobile, bool isTablet) {
     return Column(
       children: [
         // Release Pill
@@ -128,7 +136,7 @@ class _HomePageState extends State<HomePage> {
               Text('⚡', style: TextStyle(fontSize: 14)),
               SizedBox(width: 8),
               Text(
-                'Flart v2.1.0 Released • Zero CanvasKit Overhead',
+                'Flart v2.1.0 • Pure Dart Web Framework',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -141,45 +149,50 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 28),
 
         // Hero Title
-        const Text(
-          'Fast, minimal, full-stack\nweb framework for Dart',
+        Text(
+          isMobile
+              ? 'Fast, minimal web framework for Dart'
+              : 'Fast, minimal, full-stack\nweb framework for Dart',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 48,
+            fontSize: isMobile ? 32 : (isTablet ? 40 : 48),
             fontWeight: FontWeight.w800,
-            letterSpacing: -1.2,
+            letterSpacing: isMobile ? -0.5 : -1.2,
             height: 1.15,
             color: DocsTheme.textPrimary,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
 
         // Subtitle
-        const Center(
+        Center(
           child: Container(
-            constraints: BoxConstraints(maxWidth: 680),
+            constraints: const BoxConstraints(maxWidth: 680),
             child: Text(
               'Build rich, responsive web apps in pure Dart with an ultra-lightweight Virtual DOM, 100% Flutter API parity, and native Dart Frog full-stack integration.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: isMobile ? 15 : 17,
                 height: 1.6,
                 color: DocsTheme.textSecondary,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 32),
 
         // CTA Buttons
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          spacing: 16,
+          runSpacing: 12,
+          alignment: WrapAlignment.center,
           children: [
             GestureDetector(
               onTap: () => PageNavigator.pushNamed('/docs/installation'),
-              child: const Container(
-                padding: EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                decoration: BoxDecoration(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 22 : 28, vertical: 14),
+                decoration: const BoxDecoration(
                   color: DocsTheme.accentGreen,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
@@ -190,7 +203,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                child: Row(
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       'Get Started',
@@ -207,12 +221,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
             GestureDetector(
               onTap: () => PageNavigator.pushNamed('/docs/widgets/basic'),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 20 : 24, vertical: 14),
                 decoration: BoxDecoration(
                   color: DocsTheme.surfaceAlt,
                   borderRadius: const BorderRadius.circular(10),
@@ -230,44 +243,43 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 32),
 
-        // Quick CLI Command Box
+        // Quick CLI Command Box (horizontally scrollable on mobile)
         Container(
           constraints: const BoxConstraints(maxWidth: 580),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: DocsTheme.codeBackground,
             borderRadius: const BorderRadius.circular(12),
             border: Border.all(color: DocsTheme.borderLight),
           ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Text('\$ ',
-                      style: TextStyle(
-                          color: DocsTheme.accentGreen,
-                          fontFamily: 'JetBrains Mono')),
-                  Text(
-                    'dart pub global activate flart && flart create my_app',
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('\$ ',
                     style: TextStyle(
-                      fontFamily: 'JetBrains Mono',
-                      fontSize: 13,
-                      color: Color(0xFFE2E8F0),
-                    ),
+                        color: DocsTheme.accentGreen,
+                        fontFamily: 'JetBrains Mono')),
+                Text(
+                  'dart pub global activate flart && flart create my_app',
+                  style: TextStyle(
+                    fontFamily: 'JetBrains Mono',
+                    fontSize: 13,
+                    color: Color(0xFFE2E8F0),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildBenchmarkComparison() {
+  Widget _buildBenchmarkComparison(bool isMobile) {
     return Column(
       children: [
         const Text(
@@ -300,6 +312,7 @@ class _HomePageState extends State<HomePage> {
               badge: '98.4% Smaller',
               badgeColor: DocsTheme.accentGreen,
               icon: Icons.compress,
+              isMobile: isMobile,
             ),
             _buildMetricCard(
               title: 'First Contentful Paint',
@@ -308,6 +321,7 @@ class _HomePageState extends State<HomePage> {
               badge: '17.5x Faster',
               badgeColor: DocsTheme.primary,
               icon: Icons.speed,
+              isMobile: isMobile,
             ),
             _buildMetricCard(
               title: 'SEO & Search Indexing',
@@ -316,6 +330,7 @@ class _HomePageState extends State<HomePage> {
               badge: 'Full Web Searchable',
               badgeColor: DocsTheme.accentPurple,
               icon: Icons.search,
+              isMobile: isMobile,
             ),
             _buildMetricCard(
               title: 'Virtual DOM Diffing',
@@ -324,6 +339,7 @@ class _HomePageState extends State<HomePage> {
               badge: '60+ FPS Smooth',
               badgeColor: DocsTheme.accentCyan,
               icon: Icons.memory,
+              isMobile: isMobile,
             ),
           ],
         ),
@@ -338,9 +354,10 @@ class _HomePageState extends State<HomePage> {
     required String badge,
     required Color badgeColor,
     required dynamic icon,
+    required bool isMobile,
   }) {
     return Container(
-      width: 220,
+      width: isMobile ? double.infinity : 220,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: DocsTheme.surface,
@@ -397,7 +414,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildInteractivePlayground() {
+  Widget _buildInteractivePlayground(bool isMobile) {
     return Container(
       decoration: BoxDecoration(
         color: DocsTheme.surface,
@@ -408,15 +425,18 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header
-          const Container(
-            padding: EdgeInsets.all(24),
-            decoration: BoxDecoration(
+          Container(
+            padding: EdgeInsets.all(isMobile ? 18 : 24),
+            decoration: const BoxDecoration(
               color: DocsTheme.surfaceAlt,
               borderRadius: BorderRadius.vertical(top: 19),
               border: Border(bottom: BorderSide(color: DocsTheme.border)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 8,
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -424,24 +444,32 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       'Live Interactive Flart Playground',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: isMobile ? 18 : 20,
                           fontWeight: FontWeight.bold,
                           color: DocsTheme.textPrimary),
                     ),
-                    SizedBox(height: 4),
-                    Text(
+                    const SizedBox(height: 4),
+                    const Text(
                       'Interact with real Flart widgets rendered directly into the HTML DOM below.',
                       style: TextStyle(
                           fontSize: 13, color: DocsTheme.textSecondary),
                     ),
                   ],
                 ),
-                Text(
-                  'LIVE RENDER',
-                  style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: DocsTheme.accentGreen),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: DocsTheme.accentGreen.withValues(alpha: 0.15),
+                    borderRadius: const BorderRadius.circular(6),
+                  ),
+                  child: const Text(
+                    'LIVE RENDER',
+                    style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: DocsTheme.accentGreen),
+                  ),
                 ),
               ],
             ),
@@ -449,15 +477,15 @@ class _HomePageState extends State<HomePage> {
 
           // Content: Live Controls
           Padding(
-            padding: const EdgeInsets.all(32),
+            padding: EdgeInsets.all(isMobile ? 20 : 32),
             child: Wrap(
-              spacing: 32,
-              runSpacing: 24,
+              spacing: 24,
+              runSpacing: 20,
               alignment: WrapAlignment.spaceEvenly,
               children: [
                 // Control 1: Counter
                 Container(
-                  width: 240,
+                  width: isMobile ? double.infinity : 240,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: DocsTheme.card,
@@ -502,7 +530,7 @@ class _HomePageState extends State<HomePage> {
 
                 // Control 2: Switch & Toggle
                 Container(
-                  width: 240,
+                  width: isMobile ? double.infinity : 240,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: DocsTheme.card,
@@ -542,7 +570,7 @@ class _HomePageState extends State<HomePage> {
 
                 // Control 3: Slider
                 Container(
-                  width: 260,
+                  width: isMobile ? double.infinity : 260,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: DocsTheme.card,
@@ -584,9 +612,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDartFrogTelemetry() {
+  Widget _buildDartFrogTelemetry(bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(28),
+      padding: EdgeInsets.all(isMobile ? 20 : 28),
       decoration: BoxDecoration(
         color: DocsTheme.surfaceAlt,
         borderRadius: const BorderRadius.circular(18),
@@ -595,26 +623,30 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            spacing: 12,
+            runSpacing: 10,
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              const Row(
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('🐸', style: TextStyle(fontSize: 24)),
-                  SizedBox(width: 12),
+                  const Text('🐸', style: TextStyle(fontSize: 24)),
+                  const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Full-Stack Dart Frog Backend Integration',
+                        'Full-Stack Dart Frog Backend',
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: isMobile ? 16 : 18,
                             fontWeight: FontWeight.bold,
                             color: DocsTheme.textPrimary),
                       ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Live telemetry stream from http://localhost:8081/api/v1/stats',
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Live telemetry from http://localhost:8081/api/v1/stats',
                         style: TextStyle(
                             fontSize: 12, color: DocsTheme.textSecondary),
                       ),
@@ -688,7 +720,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCategoriesGrid() {
+  Widget _buildCategoriesGrid(bool isMobile) {
     return Column(
       children: [
         const Text(
@@ -713,47 +745,56 @@ class _HomePageState extends State<HomePage> {
                 '1. Basic & Core',
                 'Container, Text, Padding, Center, SizedBox, ColoredBox',
                 '/docs/widgets/basic',
-                Icons.widgets),
+                Icons.widgets,
+                isMobile),
             _buildCategoryCard(
                 '2. Layout & Structure',
                 'Column, Row, Flex, Expanded, Spacer, Wrap, Stack, Positioned',
                 '/docs/widgets/layout',
-                Icons.view_quilt),
+                Icons.view_quilt,
+                isMobile),
             _buildCategoryCard(
                 '3. Decoration & Style',
                 'BoxDecoration, Border, BorderRadius, BoxShadow, Gradient, ClipRRect',
                 '/docs/widgets/decoration',
-                Icons.palette),
+                Icons.palette,
+                isMobile),
             _buildCategoryCard(
                 '4. Scrollables & Lists',
                 'ListView, ListView.builder, GridView, SingleChildScrollView',
                 '/docs/widgets/scrollables',
-                Icons.view_stream),
+                Icons.view_stream,
+                isMobile),
             _buildCategoryCard(
                 '5. Form & Inputs',
                 'TextField, TextFormField, Checkbox, Radio, Switch, Slider, Dropdown',
                 '/docs/widgets/inputs',
-                Icons.edit),
+                Icons.edit,
+                isMobile),
             _buildCategoryCard(
                 '6. Buttons & Gestures',
                 'ElevatedButton, TextButton, OutlinedButton, IconButton, GestureDetector',
                 '/docs/widgets/buttons',
-                Icons.touch_app),
+                Icons.touch_app,
+                isMobile),
             _buildCategoryCard(
                 '7. Animations',
                 'AnimatedContainer, AnimatedOpacity, FadeTransition, SlideTransition',
                 '/docs/widgets/animation',
-                Icons.animation),
+                Icons.animation,
+                isMobile),
             _buildCategoryCard(
                 '8. Media & Feedback',
                 'Image.network, Icon, ProgressIndicator, Tooltip, SnackBar',
                 '/docs/widgets/media',
-                Icons.image),
+                Icons.image,
+                isMobile),
             _buildCategoryCard(
                 '9. Utility & Modals',
                 'Dialog, AlertDialog, BottomSheet, Divider, Opacity, Visibility',
                 '/docs/widgets/utility',
-                Icons.layers),
+                Icons.layers,
+                isMobile),
           ],
         ),
       ],
@@ -761,11 +802,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategoryCard(
-      String title, String desc, String route, dynamic icon) {
+      String title, String desc, String route, dynamic icon, bool isMobile) {
     return GestureDetector(
       onTap: () => PageNavigator.pushNamed(route),
       child: Container(
-        width: 280,
+        width: isMobile ? double.infinity : 280,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: DocsTheme.surface,
@@ -809,9 +850,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFeedbackSection() {
+  Widget _buildFeedbackSection(bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: EdgeInsets.all(isMobile ? 20 : 32),
       decoration: BoxDecoration(
         color: DocsTheme.surface,
         borderRadius: const BorderRadius.circular(20),
@@ -848,37 +889,67 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold, color: DocsTheme.accentGreen),
               ),
             ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _authorController,
-                  placeholder: 'Your name or handle (e.g. @developer)',
-                  style: const TextStyle(color: DocsTheme.textPrimary),
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Rating picker
-              Row(
-                children: [
-                  for (int r = 1; r <= 5; r++)
-                    GestureDetector(
-                      onTap: () => setState(() => _selectedRating = r),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Icon(
-                          Icons.star,
-                          size: 22,
-                          color: r <= _selectedRating
-                              ? DocsTheme.accentAmber
-                              : DocsTheme.textMuted,
-                        ),
+          if (isMobile) ...[
+            TextField(
+              controller: _authorController,
+              placeholder: 'Your name or handle (e.g. @developer)',
+              style: const TextStyle(color: DocsTheme.textPrimary),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const Text('Rating: ',
+                    style: TextStyle(
+                        color: DocsTheme.textSecondary, fontSize: 13)),
+                const SizedBox(width: 8),
+                for (int r = 1; r <= 5; r++)
+                  GestureDetector(
+                    onTap: () => setState(() => _selectedRating = r),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        Icons.star,
+                        size: 24,
+                        color: r <= _selectedRating
+                            ? DocsTheme.accentAmber
+                            : DocsTheme.textMuted,
                       ),
                     ),
-                ],
-              ),
-            ],
-          ),
+                  ),
+              ],
+            ),
+          ] else
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _authorController,
+                    placeholder: 'Your name or handle (e.g. @developer)',
+                    style: const TextStyle(color: DocsTheme.textPrimary),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                // Rating picker
+                Row(
+                  children: [
+                    for (int r = 1; r <= 5; r++)
+                      GestureDetector(
+                        onTap: () => setState(() => _selectedRating = r),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(
+                            Icons.star,
+                            size: 22,
+                            color: r <= _selectedRating
+                                ? DocsTheme.accentAmber
+                                : DocsTheme.textMuted,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           const SizedBox(height: 16),
           TextField(
             controller: _feedbackController,

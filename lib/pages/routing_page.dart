@@ -22,6 +22,8 @@ class RoutingPage extends StatelessWidget {
           const SizedBox(height: 32),
           _buildNavigationMethods(),
           const SizedBox(height: 32),
+          _buildExternalNavigation(),
+          const SizedBox(height: 32),
           _buildRouteGuards(),
         ],
       ),
@@ -167,6 +169,46 @@ PageNavigator.replaceNamed('/dashboard');
 PageNavigator.pop();''',
           language: 'dart',
           title: 'Navigation Commands',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExternalNavigation() {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Navigating to External Websites',
+          style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: DocsTheme.textPrimary),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Flart provides dedicated methods to navigate to external websites in the same tab or in a new browser tab without interfering with SPA routing:',
+          style: TextStyle(
+              fontSize: 14, color: DocsTheme.textSecondary, height: 1.5),
+        ),
+        SizedBox(height: 12),
+        CodeBlock(
+          code: '''// 1. Open external website in the SAME tab
+PageNavigator.openUrl('https://dart.dev');
+// or explicitly:
+PageNavigator.openUrl('https://dart.dev', newTab: false);
+
+// 2. Open external website in a NEW tab (_blank)
+PageNavigator.openUrl('https://pub.dev/packages/flartdart', newTab: true);
+
+// 3. Convenience helper (Flutter url_launcher style)
+PageNavigator.launchUrl('https://github.com', newTab: true);
+
+// 4. Open either an internal route or external website in a new tab
+PageNavigator.pushNewTab('/docs/widgets/basic'); // internal route in new tab
+PageNavigator.pushNewTab('https://dart.dev');          // external website in new tab''',
+          language: 'dart',
+          title: 'External Web Navigation',
         ),
       ],
     );

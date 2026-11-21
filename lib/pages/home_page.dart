@@ -90,12 +90,18 @@ class _HomePageState extends State<HomePage> {
             border:
                 Border.all(color: DocsTheme.accentGreen.withValues(alpha: 0.3)),
           ),
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('⚡', style: TextStyle(fontSize: 14)),
-              SizedBox(width: 8),
-              Text(
+              Image.asset(
+                'assets/dart_logo.png',
+                width: 16,
+                height: 16,
+                fit: BoxFit.contain,
+                alt: 'Dart Logo',
+              ),
+              const SizedBox(width: 8),
+              const Text(
                 'Flart v2.1.0 • Pure Dart Web Framework',
                 style: TextStyle(
                   fontSize: 13,
@@ -592,7 +598,13 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('⚡', style: TextStyle(fontSize: 24)),
+                  Image.asset(
+                    'assets/dart_logo.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
+                    alt: 'Dart Logo',
+                  ),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

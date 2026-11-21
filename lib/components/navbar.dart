@@ -142,26 +142,16 @@ class DocsNavbar extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF2563EB), Color(0xFF10B981)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(9),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x3310B981),
-                  blurRadius: 10,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Icon(Icons.bolt, size: 20, color: Colors.white),
+          Container(
+            width: 32,
+            height: 32,
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/dart_logo.png',
+              width: 32,
+              height: 32,
+              fit: BoxFit.contain,
+              alt: 'Dart Logo',
             ),
           ),
           const SizedBox(width: 10),

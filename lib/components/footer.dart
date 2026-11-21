@@ -25,26 +25,25 @@ class DocsFooter extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Brand & summary
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF10B981), Color(0xFF3B82F6)],
-                              ),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Center(
-                              child: Text('⚡', style: TextStyle(fontSize: 14)),
+                            width: 26,
+                            height: 26,
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              'assets/dart_logo.png',
+                              width: 26,
+                              height: 26,
+                              fit: BoxFit.contain,
+                              alt: 'Dart Logo',
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Text(
+                          const SizedBox(width: 10),
+                          const Text(
                             'FlartDart',
                             style: TextStyle(
                               fontSize: 18,
@@ -54,8 +53,8 @@ class DocsFooter extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 12),
-                      SizedBox(
+                      const SizedBox(height: 12),
+                      const SizedBox(
                         width: 300,
                         child: Text(
                           'The lightweight web framework for Dart.\nPure Dart Virtual DOM, zero CanvasKit overhead, 100% Flutter API parity.',

@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(width: 8),
               const Text(
-                'Flart v2.1.0 • Pure Dart Web Framework',
+                'Flart v2.2.0 • Pure Dart Web Framework',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -634,7 +634,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: const BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  'v2.1.0 STABLE',
+                  'v2.2.0 STABLE',
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -826,7 +826,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 6),
           const Text(
-            'Share your thoughts on FlartDart 2.1.0 — we love hearing from the community.',
+            'Share your thoughts on FlartDart 2.2.0 — we love hearing from the community.',
             style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
           ),
           const SizedBox(height: 24),
@@ -911,7 +911,7 @@ class _HomePageState extends State<HomePage> {
           TextField(
             controller: _feedbackController,
             placeholder:
-                'What do you think of FlartDart v2.1.0?',
+                'What do you think of FlartDart v2.2.0?',
             style: const TextStyle(color: DocsTheme.textPrimary),
           ),
           const SizedBox(height: 20),

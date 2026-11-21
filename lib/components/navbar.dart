@@ -173,7 +173,7 @@ class DocsNavbar extends StatelessWidget {
               border: Border.all(color: const Color(0x3310B981), width: 1),
             ),
             child: const Text(
-              'v2.1.0',
+              'v2.2.0',
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,

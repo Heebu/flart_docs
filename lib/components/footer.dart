@@ -100,7 +100,7 @@ class DocsFooter extends StatelessWidget {
                     style: TextStyle(fontSize: 12, color: DocsTheme.textMuted),
                   ),
                   Text(
-                    'Built with Flart v2.1.0',
+                    'Built with Flart v2.2.0',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

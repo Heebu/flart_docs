@@ -446,7 +446,7 @@ class _SearchDialogState extends State<SearchDialog> {
                               fontSize: 11, color: DocsTheme.textMuted),
                         ),
                         Text(
-                          'Flart v2.1.0',
+                          'Flart v2.2.0',
                           style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,

@@ -58,7 +58,7 @@ class DocsFooter extends StatelessWidget {
                       SizedBox(
                         width: 300,
                         child: Text(
-                          'The lightweight full-stack web framework for Dart.\nPure Dart Virtual DOM, zero CanvasKit overhead, 100% Flutter API parity.',
+                          'The lightweight web framework for Dart.\nPure Dart Virtual DOM, zero CanvasKit overhead, 100% Flutter API parity.',
                           style: TextStyle(
                             fontSize: 13,
                             height: 1.5,
@@ -83,8 +83,6 @@ class DocsFooter extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      _buildFooterLink(
-                          'Dart Frog', 'https://dartfrog.vgv.dev/'),
                       _buildFooterLink('pub.dev / flartdart',
                           'https://pub.dev/packages/flartdart'),
                       _buildFooterLink('Dart SDK', 'https://dart.dev'),
@@ -103,7 +101,7 @@ class DocsFooter extends StatelessWidget {
                     style: TextStyle(fontSize: 12, color: DocsTheme.textMuted),
                   ),
                   Text(
-                    'Built with Flart v2.1.0 & Dart Frog',
+                    'Built with Flart v2.1.0',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

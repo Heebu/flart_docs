@@ -224,7 +224,7 @@ class LayoutWidgetsPage extends StatelessWidget {
               'Virtual DOM',
               'Flutter API',
               'Full-Stack',
-              'Dart Frog',
+              'Pure Dart',
               'Zero CanvasKit',
               'Web 60 FPS'
             ])
@@ -250,7 +250,7 @@ class LayoutWidgetsPage extends StatelessWidget {
     Chip(label: Text('Dart')),
     Chip(label: Text('Virtual DOM')),
     Chip(label: Text('Flutter API')),
-    Chip(label: Text('Dart Frog')),
+    Chip(label: Text('Pure Dart')),
   ],
 )''',
     );

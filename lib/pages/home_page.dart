@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flartdart/flartdart.dart';
-import 'package:http/http.dart' as http;
 import '../theme/docs_theme.dart';
 import '../components/docs_shell.dart';
 
@@ -17,73 +15,35 @@ class _HomePageState extends State<HomePage> {
   bool _isSwitchOn = true;
   double _sliderValue = 50.0;
 
-  // Dart Frog Backend Telemetry
-  Map<String, dynamic>? _serverStats;
-  bool _isLoadingStats = true;
-
   // Feedback Submission State
   final TextEditingController _feedbackController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
   int _selectedRating = 5;
-  final String _selectedCategory = 'General';
   bool _isSubmittingFeedback = false;
   String? _feedbackSuccessMsg;
+  final List<Map<String, dynamic>> _localFeedback = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchServerStats();
-  }
-
-  Future<void> _fetchServerStats() async {
-    try {
-      final res =
-          await http.get(Uri.parse('http://localhost:8081/api/v1/stats'));
-      if (res.statusCode == 200) {
-        final data = jsonDecode(res.body) as Map<String, dynamic>;
-        if (mounted) {
-          setState(() {
-            _serverStats = data;
-            _isLoadingStats = false;
-          });
-        }
-      }
-    } catch (_) {
-      if (mounted) setState(() => _isLoadingStats = false);
-    }
-  }
-
-  Future<void> _submitFeedback() async {
+  void _submitFeedback() {
     final msg = _feedbackController.text.trim();
     if (msg.isEmpty) return;
 
-    setState(() => _isSubmittingFeedback = true);
+    setState(() {
+      _isSubmittingFeedback = true;
+    });
 
-    try {
-      final res = await http.post(
-        Uri.parse('http://localhost:8081/api/v1/feedback'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'rating': _selectedRating,
-          'category': _selectedCategory,
-          'message': msg,
-          'author': _authorController.text.trim(),
-        }),
-      );
+    _localFeedback.add({
+      'rating': _selectedRating,
+      'message': msg,
+      'author': _authorController.text.trim().isNotEmpty
+          ? _authorController.text.trim()
+          : 'Anonymous Developer',
+    });
 
-      if (res.statusCode == 201) {
-        if (mounted) {
-          setState(() {
-            _isSubmittingFeedback = false;
-            _feedbackSuccessMsg =
-                'Thank you! Your feedback was sent to Dart Frog backend.';
-            _feedbackController.text = '';
-          });
-        }
-      }
-    } catch (_) {
-      if (mounted) setState(() => _isSubmittingFeedback = false);
-    }
+    setState(() {
+      _isSubmittingFeedback = false;
+      _feedbackSuccessMsg = 'Thank you! Your feedback has been recorded.';
+      _feedbackController.text = '';
+    });
   }
 
   @override
@@ -106,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 64),
               _buildInteractivePlayground(isMobile),
               const SizedBox(height: 64),
-              _buildDartFrogTelemetry(isMobile),
+              _buildFrameworkStats(isMobile),
               const SizedBox(height: 64),
               _buildCategoriesGrid(isMobile),
               const SizedBox(height: 64),
@@ -151,8 +111,8 @@ class _HomePageState extends State<HomePage> {
         // Hero Title
         Text(
           isMobile
-              ? 'Fast, minimal web framework for Dart'
-              : 'Fast, minimal, full-stack\nweb framework for Dart',
+              ? 'Fast, minimal web\nframework for Dart'
+              : 'Fast, minimal, lightweight\nweb framework for Dart',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: isMobile ? 32 : (isTablet ? 40 : 48),
@@ -169,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 680),
             child: Text(
-              'Build rich, responsive web apps in pure Dart with an ultra-lightweight Virtual DOM, 100% Flutter API parity, and native Dart Frog full-stack integration.',
+              'Build rich, responsive web apps in pure Dart with an ultra-lightweight Virtual DOM, 100% Flutter API parity, and zero CanvasKit overhead.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: isMobile ? 15 : 17,
@@ -612,7 +572,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDartFrogTelemetry(bool isMobile) {
+  Widget _buildFrameworkStats(bool isMobile) {
     return Container(
       padding: EdgeInsets.all(isMobile ? 20 : 28),
       decoration: BoxDecoration(
@@ -632,13 +592,13 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('🐸', style: TextStyle(fontSize: 24)),
+                  const Text('⚡', style: TextStyle(fontSize: 24)),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Full-Stack Dart Frog Backend',
+                        'FlartDart Framework Stats',
                         style: TextStyle(
                             fontSize: isMobile ? 16 : 18,
                             fontWeight: FontWeight.bold,
@@ -646,7 +606,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 2),
                       const Text(
-                        'Live telemetry from http://localhost:8081/api/v1/stats',
+                        'Lightweight pure Dart web framework at a glance',
                         style: TextStyle(
                             fontSize: 12, color: DocsTheme.textSecondary),
                       ),
@@ -662,7 +622,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: const BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  'ONLINE',
+                  'v2.1.0 STABLE',
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -672,33 +632,17 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           const SizedBox(height: 20),
-          if (_isLoadingStats)
-            const Center(
-                child: CircularProgressIndicator(color: DocsTheme.accentGreen))
-          else if (_serverStats != null)
-            Wrap(
-              spacing: 24,
-              runSpacing: 16,
-              children: [
-                _buildTelemetryField(
-                    'Backend Server',
-                    _serverStats!['server']['backend'] as String? ??
-                        'Dart Frog'),
-                _buildTelemetryField(
-                    'Runtime',
-                    _serverStats!['server']['runtime'] as String? ??
-                        'Dart 3.x'),
-                _buildTelemetryField('Widgets Audited', '100+'),
-                _buildTelemetryField(
-                    'Categories', '9 Categories (100% Parity)'),
-                _buildTelemetryField('Status', 'Healthy (200 OK)'),
-              ],
-            )
-          else
-            const Text(
-              'Dart Frog backend not reachable on port 8081.',
-              style: TextStyle(color: Color(0xFFEF4444), fontSize: 13),
-            ),
+          Wrap(
+            spacing: 24,
+            runSpacing: 16,
+            children: [
+              _buildTelemetryField('Runtime', 'Dart SDK 3.x'),
+              _buildTelemetryField('Widgets Audited', '100+'),
+              _buildTelemetryField('Categories', '9 Categories (100% Parity)'),
+              _buildTelemetryField('Bundle Size', '~280 KB gzipped'),
+              _buildTelemetryField('License', 'MIT'),
+            ],
+          ),
         ],
       ),
     );
@@ -870,7 +814,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 6),
           const Text(
-            'Share your thoughts on FlartDart 2.1.0. Submissions post directly to Dart Frog via POST /api/v1/feedback.',
+            'Share your thoughts on FlartDart 2.1.0 — we love hearing from the community.',
             style: TextStyle(fontSize: 14, color: DocsTheme.textSecondary),
           ),
           const SizedBox(height: 24),
@@ -955,14 +899,14 @@ class _HomePageState extends State<HomePage> {
           TextField(
             controller: _feedbackController,
             placeholder:
-                'What do you think of FlartDart v2.1.0 and Dart Frog integration?',
+                'What do you think of FlartDart v2.1.0?',
             style: const TextStyle(color: DocsTheme.textPrimary),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmittingFeedback ? null : _submitFeedback,
             child: Text(_isSubmittingFeedback
-                ? 'Submitting to Dart Frog...'
+                ? 'Submitting...'
                 : 'Submit Feedback'),
           ),
         ],

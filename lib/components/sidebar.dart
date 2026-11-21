@@ -36,8 +36,6 @@ class DocsSidebar extends StatelessWidget {
                   'Installation & CLI', '/docs/installation', Icons.terminal),
               _buildNavItem('Virtual DOM Architecture', '/docs/architecture',
                   Icons.memory),
-              _buildNavItem(
-                  'Full-Stack Dart Frog', '/docs/fullstack', Icons.cloud),
 
               const SizedBox(height: 20),
               _buildSectionHeader('CORE CONCEPTS'),
@@ -68,54 +66,6 @@ class DocsSidebar extends StatelessWidget {
               _buildNavItem(
                   '9. Utility & Modals', '/docs/widgets/utility', Icons.layers),
 
-              const SizedBox(height: 32),
-              // Backend health badge
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: DocsTheme.surfaceAlt,
-                  borderRadius: const BorderRadius.circular(10),
-                  border: Border.all(color: DocsTheme.borderLight),
-                ),
-                child: const Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: DocsTheme.accentGreen,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x6610B981),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Dart Frog Server',
-                            style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: DocsTheme.textPrimary),
-                          ),
-                          Text(
-                            'Port 8081 • Healthy',
-                            style: TextStyle(
-                                fontSize: 10, color: DocsTheme.textMuted),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         ),

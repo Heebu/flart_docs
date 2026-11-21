@@ -2,7 +2,6 @@ import 'package:flartdart/flartdart.dart';
 import 'package:flart_docs/pages/home_page.dart';
 import 'package:flart_docs/pages/installation_page.dart';
 import 'package:flart_docs/pages/architecture_page.dart';
-import 'package:flart_docs/pages/fullstack_page.dart';
 import 'package:flart_docs/pages/responsive_sizing_page.dart';
 import 'package:flart_docs/pages/state_management_page.dart';
 import 'package:flart_docs/pages/routing_page.dart';
@@ -25,7 +24,6 @@ void main() {
     '/': const HomePage(),
     '/docs/installation': const InstallationPage(),
     '/docs/architecture': const ArchitecturePage(),
-    '/docs/fullstack': const FullstackPage(),
     '/docs/responsive': const ResponsiveSizingPage(),
     '/docs/state': const StateManagementPage(),
     '/docs/routing': const RoutingPage(),

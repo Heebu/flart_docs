@@ -1,8 +1,0 @@
-include: package:dart_frog_lint/recommended.yaml
-
-linter:
-  rules:
-    lines_longer_than_80_chars: false
-    avoid_escaping_inner_quotes: false
-    use_raw_strings: false
-    leading_newlines_in_multiline_strings: false

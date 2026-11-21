@@ -1,5 +1,5 @@
 name: flart_docs
-description: Official modern documentation and showcase website for FlartDart, powered by Dart Frog.
+description: Official modern documentation and showcase website for FlartDart.
 version: 2.1.0
 publish_to: 'none'
 
@@ -9,7 +9,6 @@ environment:
 dependencies:
   flartdart:
     path: ../flart
-  http: ^1.2.0
   web: ^1.1.0
 
 dev_dependencies:

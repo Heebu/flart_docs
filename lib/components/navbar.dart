@@ -26,10 +26,8 @@ class DocsNavbar extends StatelessWidget {
 
         final isArchitectureActive = currentRoute.contains('/architecture');
         final isWidgetsActive = currentRoute.contains('/widgets');
-        final isFullstackActive = currentRoute.contains('/fullstack');
         final isDocsActive = !isArchitectureActive &&
             !isWidgetsActive &&
-            !isFullstackActive &&
             (currentRoute == '/' || currentRoute.startsWith('/docs'));
 
         return Container(
@@ -63,8 +61,6 @@ class DocsNavbar extends StatelessWidget {
                         isArchitectureActive),
                     _buildNavLink(
                         'Widgets', '/docs/widgets/basic', isWidgetsActive),
-                    _buildNavLink('Dart Frog', '/docs/fullstack',
-                        isFullstackActive),
                     const SizedBox(width: 8),
                     const Container(
                       width: 1,

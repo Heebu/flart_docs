@@ -146,7 +146,7 @@ class DocsNavbar extends StatelessWidget {
             width: 32,
             height: 32,
             alignment: Alignment.center,
-            child: Image.asset(
+            child: Image.network(
               'assets/dart_logo.png',
               width: 32,
               height: 32,

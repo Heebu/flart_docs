@@ -34,7 +34,7 @@ class DocsFooter extends StatelessWidget {
                             width: 26,
                             height: 26,
                             alignment: Alignment.center,
-                            child: Image.asset(
+                            child: Image.network(
                               'assets/dart_logo.png',
                               width: 26,
                               height: 26,

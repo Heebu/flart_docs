@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
+              Image.network(
                 'assets/dart_logo.png',
                 width: 16,
                 height: 16,
@@ -598,7 +598,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
+                  Image.network(
                     'assets/dart_logo.png',
                     width: 24,
                     height: 24,

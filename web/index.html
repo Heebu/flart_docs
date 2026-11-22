@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    const base = document.createElement('base');
+    base.href = window.location.pathname.endsWith('/') ? window.location.pathname : window.location.pathname + '/';
+    document.head.appendChild(base);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Flart — The Lightweight Web Framework for Dart with Virtual DOM & Pure Dart Performance">
   <meta name="theme-color" content="#0B0F19">
@@ -115,7 +120,7 @@
     }
   </style>
 
-  <script defer src="main.dart.js"></script>
+  <script defer src="main.dart.js?v=2.2.0_1"></script>
 </head>
 <body>
   <div id="app"></div>

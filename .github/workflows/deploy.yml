@@ -1,0 +1,50 @@
+name: Deploy Flart Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Dart SDK
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Build static documentation
+        run: dart run build_runner build --output web:build --release
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'build/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

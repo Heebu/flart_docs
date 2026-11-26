@@ -10,12 +10,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Live Playground State
   int _counter = 0;
   bool _isSwitchOn = true;
   double _sliderValue = 50.0;
 
-  // Feedback Submission State
   final TextEditingController _feedbackController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
   int _selectedRating = 5;
@@ -81,7 +79,6 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeroSection(bool isMobile, bool isTablet) {
     return Column(
       children: [
-        // Release Pill
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
@@ -114,7 +111,6 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 28),
 
-        // Hero Title
         Text(
           isMobile
               ? 'Fast, minimal web\nframework for Dart'
@@ -130,7 +126,6 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 16),
 
-        // Subtitle
         Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 680),
@@ -147,7 +142,6 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 32),
 
-        // CTA Buttons
         Wrap(
           spacing: 16,
           runSpacing: 12,
@@ -211,7 +205,6 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 32),
 
-        // Quick CLI Command Box (horizontally scrollable on mobile)
         Container(
           constraints: const BoxConstraints(maxWidth: 580),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -265,7 +258,6 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 32),
 
-        // 4 Metric cards
         Wrap(
           spacing: 16,
           runSpacing: 16,
@@ -390,7 +382,6 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header
           Container(
             padding: EdgeInsets.all(isMobile ? 18 : 24),
             decoration: const BoxDecoration(
@@ -441,7 +432,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Content: Live Controls
           Padding(
             padding: EdgeInsets.all(isMobile ? 20 : 32),
             child: Wrap(
@@ -449,7 +439,6 @@ class _HomePageState extends State<HomePage> {
               runSpacing: 20,
               alignment: WrapAlignment.spaceEvenly,
               children: [
-                // Control 1: Counter
                 Container(
                   width: isMobile ? double.infinity : 240,
                   padding: const EdgeInsets.all(20),
@@ -494,7 +483,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                // Control 2: Switch & Toggle
                 Container(
                   width: isMobile ? double.infinity : 240,
                   padding: const EdgeInsets.all(20),
@@ -534,7 +522,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                // Control 3: Slider
                 Container(
                   width: isMobile ? double.infinity : 260,
                   padding: const EdgeInsets.all(20),
@@ -886,7 +873,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                // Rating picker
                 Row(
                   children: [
                     for (int r = 1; r <= 5; r++)

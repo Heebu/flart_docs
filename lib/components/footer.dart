@@ -24,7 +24,6 @@ class DocsFooter extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Brand & summary
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -68,7 +67,6 @@ class DocsFooter extends StatelessWidget {
                     ],
                   ),
 
-                  // Quick links
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

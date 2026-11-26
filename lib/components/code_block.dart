@@ -30,9 +30,7 @@ class _CodeBlockState extends State<CodeBlock> {
           setState(() => _copied = false);
         }
       });
-    } catch (_) {
-      // Fallback if clipboard API is restricted
-    }
+    } catch (_) {}
   }
 
   @override
@@ -48,7 +46,6 @@ class _CodeBlockState extends State<CodeBlock> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Top bar with language / file name and Copy button
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: const BoxDecoration(
@@ -133,7 +130,6 @@ class _CodeBlockState extends State<CodeBlock> {
               ],
             ),
           ),
-          // Code content container (horizontally scrollable on small/medium screens)
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Container(

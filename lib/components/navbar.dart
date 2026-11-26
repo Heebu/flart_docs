@@ -45,13 +45,8 @@ class DocsNavbar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Left: Logo & Brand & Version Pill
               _buildBrandLogo(),
-
-              // Center: Modern Search trigger (on Desktop)
               if (isDesktop) _buildSearchTrigger(),
-
-              // Right: Navigation Links & Ecosystem Buttons (Desktop)
               if (isDesktop)
                 Row(
                   children: [
@@ -73,7 +68,6 @@ class DocsNavbar extends StatelessWidget {
                   ],
                 )
               else if (isTablet)
-                // Tablet: Compact Search pill + pub.dev + Hamburger
                 Row(
                   children: [
                     GestureDetector(
@@ -108,7 +102,6 @@ class DocsNavbar extends StatelessWidget {
                   ],
                 )
               else
-                // Mobile: Search icon + Hamburger
                 Row(
                   children: [
                     GestureDetector(

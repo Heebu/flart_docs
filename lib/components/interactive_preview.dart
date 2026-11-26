@@ -43,7 +43,6 @@ class _InteractivePreviewState extends State<InteractivePreview> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header with Title and Mode Switcher
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             decoration: const BoxDecoration(
@@ -77,7 +76,6 @@ class _InteractivePreviewState extends State<InteractivePreview> {
                     ),
                   ],
                 ),
-                // Toggle Preview / Code buttons
                 Container(
                   padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
@@ -140,7 +138,6 @@ class _InteractivePreviewState extends State<InteractivePreview> {
             ),
           ),
 
-          // Content: either live preview or code block
           if (!_showCode)
             Container(
               padding: const EdgeInsets.all(24),

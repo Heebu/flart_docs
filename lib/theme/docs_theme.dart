@@ -10,9 +10,9 @@ class DocsTheme {
   static const Color codeBackground = Color(0xFF0F172A);
 
   // Accents
-  static const Color primary = Color(0xFF3B82F6); // Electric Blue
+  static const Color primary = Color(0xFF3B82F6);
   static const Color primaryDark = Color(0xFF2563EB);
-  static const Color accentGreen = Color(0xFF10B981); // Emerald / Frog Green
+  static const Color accentGreen = Color(0xFF10B981);
   static const Color accentPurple = Color(0xFF8B5CF6);
   static const Color accentAmber = Color(0xFFF59E0B);
   static const Color accentCyan = Color(0xFF06B6D4);

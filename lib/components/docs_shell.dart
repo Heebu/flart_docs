@@ -42,7 +42,6 @@ class _DocsShellState extends State<DocsShell> {
             children: [
               Column(
                 children: [
-                  // Top navbar
                   DocsNavbar(
                     onOpenSearch: () => setState(() => _isSearchOpen = true),
                     onToggleMobileMenu: () => setState(
@@ -50,18 +49,13 @@ class _DocsShellState extends State<DocsShell> {
                     isMobileMenuOpen: _isMobileMenuOpen,
                     currentRoute: widget.currentRoute,
                   ),
-
-                  // Main Content + Sidebar
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Desktop Sidebar only (>= 1024px)
                       if (isDesktop)
                         DocsSidebar(
                           currentRoute: widget.currentRoute,
                         ),
-
-                      // Content Area (takes full width on Mobile & Tablet)
                       Expanded(
                         child: Column(
                           children: [
@@ -84,8 +78,6 @@ class _DocsShellState extends State<DocsShell> {
                   ),
                 ],
               ),
-
-              // Drawer overlay for Mobile & Tablet (< 1024px)
               if (!isDesktop && _isMobileMenuOpen)
                 Positioned(
                   top: 64,
@@ -111,8 +103,6 @@ class _DocsShellState extends State<DocsShell> {
                     ),
                   ),
                 ),
-
-              // Global search modal
               if (_isSearchOpen)
                 Positioned(
                   top: 0,
